@@ -1,13 +1,18 @@
 require('dotenv').config()
+const app = require('./app.js')
 const connectDB = require("./db/index.js")
+const port = process.env.PORT || 8000;
 
-connectDB();
-
-/*( async () => {
+connectDB()
+.then(() => {
     try {
-        await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`);
+        app.listen(port, () => {
+            console.log(`Server is running at port ${port}`)
+        })
     } catch (error) {
-        console.log("Error: ", error)
-        throw new error;
+        console.log(`App CANNOT listen at port : ${port}`, error)
     }
-})() */
+})
+.catch((err) => {
+    console.log("MongoDB connection failed!!! ", err)
+})
